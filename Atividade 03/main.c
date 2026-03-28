@@ -73,6 +73,13 @@ void set_led_duty(int channel, int duty) {
     ledc_update_duty(LEDC_MODE, channel);
 }
 
+void apagar_todos_leds() {
+    set_led_duty(LED1_CHANNEL, 0);
+    set_led_duty(LED2_CHANNEL, 0);
+    set_led_duty(LED3_CHANNEL, 0);
+    set_led_duty(LED4_CHANNEL, 0);
+}
+
 // ================= FASE 1 =================
 // Fading
 void fase1_fading() {
@@ -89,40 +96,55 @@ void fase1_fading() {
         }
         vTaskDelay(pdMS_TO_TICKS(DELAY_MS));
     }
+
+    apagar_todos_leds();
 }
 
 // ================= FASE 2 =================
 
-
-void apagar_todos_leds() {
-    set_led_duty(LED1_CHANNEL, 0);
-    set_led_duty(LED2_CHANNEL, 0);
-    set_led_duty(LED3_CHANNEL, 0);
-    set_led_duty(LED4_CHANNEL, 0);
-}
 
 void acender_led(int channel) {
     apagar_todos_leds();
     set_led_duty(channel, 1023); // 100%
 }
 
-void fase2_varredura() {
+void fase2_fading_seq() {
 
     int channels[] = {LED1_CHANNEL, LED2_CHANNEL, LED3_CHANNEL, LED4_CHANNEL};
-
+    apagar_todos_leds();
     // Ida
     for (int i = 0; i < 4; i++) {
-        acender_led(channels[i]);
-        vTaskDelay(pdMS_TO_TICKS(300));
+
+        // Sobe
+        for (int duty = 0; duty <= 1023; duty += 20) {
+            set_led_duty(channels[i], duty);
+            vTaskDelay(pdMS_TO_TICKS(DELAY_MS));
+        }
+
+        // Desce
+        for (int duty = 1023; duty >= 0; duty -= 20) {
+            set_led_duty(channels[i], duty);
+            vTaskDelay(pdMS_TO_TICKS(DELAY_MS));
+        }
+      set_led_duty(channels[i], 0);
     }
 
     // Volta
     for (int i = 2; i >= 0; i--) {
-        acender_led(channels[i]);
-        vTaskDelay(pdMS_TO_TICKS(300));
-    }
 
-    apagar_todos_leds();
+        // Sobe
+        for (int duty = 0; duty <= 1023; duty += 20) {
+            set_led_duty(channels[i], duty);
+            vTaskDelay(pdMS_TO_TICKS(DELAY_MS));
+        }
+
+        // Desce
+        for (int duty = 1023; duty >= 0; duty -= 20) {
+            set_led_duty(channels[i], duty);
+            vTaskDelay(pdMS_TO_TICKS(DELAY_MS));
+        }
+      set_led_duty(channels[i], 0);
+    }
 }
 // ================= FASE 3 =================
 // Buzzer variando frequência
@@ -155,7 +177,7 @@ void app_main(void) {
 
         fase1_fading();
         // Fase 2
-        fase2_varredura();
+        fase2_fading_seq();
 
         // Fase 3
         fase3_buzzer();
