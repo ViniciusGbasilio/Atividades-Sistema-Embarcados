@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "author": "vinicius basilio",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-s3-devkitc-1",
+      "id": "esp",
+      "top": -48.18,
+      "left": 225.37,
+      "attrs": { "builder": "esp-idf" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led1",
+      "top": -3.6,
+      "left": -15.4,
+      "attrs": { "color": "blue" }
+    },
+    { "type": "wokwi-led", "id": "led2", "top": 54, "left": -5.8, "attrs": { "color": "blue" } },
+    { "type": "wokwi-led", "id": "led3", "top": 121.2, "left": 3.8, "attrs": { "color": "blue" } },
+    {
+      "type": "wokwi-led",
+      "id": "led4",
+      "top": -51.6,
+      "left": -44.2,
+      "attrs": { "color": "blue" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 138.35,
+      "left": 57.6,
+      "attrs": { "value": "1000" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": 80.75,
+      "left": 57.6,
+      "attrs": { "value": "1000" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r3",
+      "top": 32.75,
+      "left": 57.6,
+      "attrs": { "value": "1000" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r4",
+      "top": -15.25,
+      "left": 57.6,
+      "attrs": { "value": "1000" }
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "bz1",
+      "top": 79.2,
+      "left": -132.6,
+      "attrs": { "volume": "0.1" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "r4:1", "led4:A", "blue", [ "v0" ] ],
+    [ "led1:A", "r3:1", "blue", [ "v0" ] ],
+    [ "r2:1", "led2:A", "blue", [ "v0" ] ],
+    [ "r1:1", "led3:A", "blue", [ "v0" ] ],
+    [ "led4:C", "esp:GND.1", "black", [ "v0" ] ],
+    [ "led3:C", "esp:GND.1", "black", [ "v0" ] ],
+    [ "led2:C", "esp:GND.1", "black", [ "v0" ] ],
+    [ "led1:C", "esp:GND.1", "black", [ "v0" ] ],
+    [ "esp:2", "r4:2", "blue", [ "h48", "v-76.8", "h-211.2", "v48" ] ],
+    [ "r3:2", "esp:4", "blue", [ "v0" ] ],
+    [ "r2:2", "esp:5", "blue", [ "v0", "h37.2", "v-57.6" ] ],
+    [ "esp:18", "r1:2", "blue", [ "h-28.85", "v57.6" ] ],
+    [ "bz1:1", "esp:GND.1", "black", [ "v0" ] ],
+    [ "bz1:2", "esp:13", "green", [ "v9.6", "h287.6", "v-9.6" ] ]
+  ],
+  "dependencies": {}
+}
