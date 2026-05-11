@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "author": "vinicius basilio",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-s3-devkitc-1",
+      "id": "esp",
+      "top": -19.38,
+      "left": 167.77,
+      "attrs": { "builder": "esp-idf" }
+    },
+    { "type": "wokwi-led", "id": "led1", "top": 82.8, "left": -5.8, "attrs": { "color": "red" } },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 119.15,
+      "left": 38.4,
+      "attrs": { "value": "1000" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "esp:3", "r1:2", "green", [ "v0" ] ],
+    [ "r1:1", "led1:A", "green", [ "v0" ] ],
+    [ "led1:C", "esp:GND.1", "green", [ "v0" ] ],
+    [ "esp:17", "esp:16", "green", [ "h-28.85", "v-9.6", "h9.6" ] ]
+  ],
+  "dependencies": {}
+}
